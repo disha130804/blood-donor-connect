@@ -1,6 +1,10 @@
+import 'package:blood_donor_connect/screens/profile_screen.dart';
+import 'package:blood_donor_connect/screens/view_requests_screen.dart';
 import 'package:flutter/material.dart';
 import 'find_donor_screen.dart';
 import 'become_donor_screen.dart';
+import 'emergency_screen.dart';
+import 'view_requests_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -90,7 +94,7 @@ class HomeScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const BecomeDonorScreen(),
+                    builder: (context) => const EmergencyScreen(),
                   ),
                 );
               },
@@ -100,7 +104,14 @@ class HomeScreen extends StatelessWidget {
               Icons.favorite,
               "Become Donor",
               Colors.pink,
-                  () {},
+                  () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const BecomeDonorScreen(),
+                      ),
+                    );
+                  },
             ),
 
             buildCard(
@@ -108,9 +119,29 @@ class HomeScreen extends StatelessWidget {
               Icons.person,
               "Profile",
               Colors.blue,
-                  () {},
+                  () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ProfileScreen(),
+                      ),
+                    );
+                  },
             ),
-
+            buildCard(
+              context,
+              Icons.list_alt,
+              "View Requests",
+              Colors.green,
+                  () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ViewRequestsScreen(),
+                  ),
+                );
+              },
+            ),
           ],
         ),
       ),

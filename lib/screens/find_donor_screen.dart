@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'donor_details_screen.dart';
 
 class FindDonorScreen extends StatefulWidget {
   const FindDonorScreen({super.key});
@@ -90,6 +91,7 @@ class _FindDonorScreenState extends State<FindDonorScreen> {
                     .collection("users")
                     .where("bloodGroup", isEqualTo: selectedBlood)
                     .where("isDonor", isEqualTo: true)
+                    .where("isAvailable", isEqualTo: true)
                     .snapshots(),
 
                 builder: (context,snapshot){
@@ -140,24 +142,60 @@ class _FindDonorScreenState extends State<FindDonorScreen> {
                         margin: const EdgeInsets.only(bottom:10),
 
                         child: ListTile(
-
                           leading: CircleAvatar(
-
                             backgroundColor: Colors.red,
-
                             child: Text(
                               data["bloodGroup"],
-                              style: const TextStyle(color: Colors.white),
+                              style: const TextStyle(
+                                color: Colors.white,
+                              ),
                             ),
-
                           ),
 
-                          title: Text(data["name"]),
+                          title: Row(
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  data["name"],
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 4,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Colors.green,
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: const Text(
+                                  "Available",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
 
                           subtitle: Text(
                             "${data["city"]}\n${data["phone"]}",
                           ),
 
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => DonorDetailsScreen(
+                                  donorData: data.data(),
+                                ),
+                              ),
+                            );
+                          },
                         ),
 
                       );

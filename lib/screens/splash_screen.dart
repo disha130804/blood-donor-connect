@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'login_screen.dart';
+import 'home_screen.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -11,21 +15,32 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-    Future.delayed(const Duration(seconds: 3), () {
+    super.initState();
+    checkLogin();
+  }
+
+  Future<void> checkLogin() async {
+    await Future.delayed(const Duration(seconds: 3));
+
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (!mounted) return;
+
+    if (user != null) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) =>  LoginScreen(),
+          builder: (_) => const HomeScreen(),
         ),
       );
-    });
-    super.initState();
-
-    Future.delayed(const Duration(seconds: 3), () {
-
-      // Baad me Login Screen pe navigate karenge
-
-    });
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => LoginScreen(),
+        ),
+      );
+    }
   }
 
   @override
@@ -37,15 +52,15 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
 
-            Icon(
+            const Icon(
               Icons.favorite,
               color: Colors.white,
               size: 90,
             ),
 
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
-            Text(
+            const Text(
               "Blood Donor Connect",
               style: TextStyle(
                 color: Colors.white,
@@ -54,19 +69,20 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ),
 
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
 
-            Text(
+            const Text(
               "Donate Blood, Save Lives",
               style: TextStyle(
                 color: Colors.white70,
                 fontSize: 16,
               ),
             ),
+
             Image.asset(
               "assets/images/blood_drop.png",
               width: 180,
-            )
+            ),
           ],
         ),
       ),
