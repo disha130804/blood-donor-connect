@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "972755403713",
+    "project_id": "blood-donor-connect-c5dc9",
+    "storage_bucket": "blood-donor-connect-c5dc9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:972755403713:android:8fad8e26c2494c576f2540",
+        "android_client_info": {
+          "package_name": "com.techiguru.blood_donor_connect"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCC5X7z3k_HKSRhXCa3KX_TXHfqtnuyLxQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
