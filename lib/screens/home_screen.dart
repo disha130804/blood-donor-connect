@@ -5,6 +5,8 @@ import 'find_donor_screen.dart';
 import 'become_donor_screen.dart';
 import 'emergency_screen.dart';
 import 'view_requests_screen.dart';
+import 'hospital_registration_screen.dart';
+import 'hospital_list_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -138,6 +140,36 @@ class HomeScreen extends StatelessWidget {
                   context,
                   MaterialPageRoute(
                     builder: (context) => ViewRequestsScreen(),
+                  ),
+                );
+              },
+            ),
+            buildCard(
+              context,
+              Icons.local_hospital,
+              "Register Hospital",
+              Colors.teal,
+                  () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) =>
+                    const HospitalRegistrationScreen(),
+                  ),
+                );
+              },
+            ),
+            buildCard(
+              context,
+              Icons.medical_services,
+              "Hospital List",
+              Colors.indigo,
+                  () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) =>
+                    const HospitalListScreen(),
                   ),
                 );
               },
