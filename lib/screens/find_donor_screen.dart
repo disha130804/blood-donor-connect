@@ -1,15 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'donor_details_screen.dart';
+import 'map_screen.dart';
+import 'package:geolocator/geolocator.dart';
 
 class FindDonorScreen extends StatefulWidget {
   const FindDonorScreen({super.key});
+
 
   @override
   State<FindDonorScreen> createState() => _FindDonorScreenState();
 }
 
 class _FindDonorScreenState extends State<FindDonorScreen> {
+  double? userLatitude;
+  double? userLongitude;
 
   String selectedBlood = "A+";
   String city = "";
@@ -17,15 +22,40 @@ class _FindDonorScreenState extends State<FindDonorScreen> {
   final List<String> bloodGroups = [
     "A+","A-","B+","B-","AB+","AB-","O+","O-"
   ];
+  Future<void> getCurrentLocation() async {
+    Position position = await Geolocator.getCurrentPosition();
+
+    setState(() {
+      userLatitude = position.latitude;
+      userLongitude = position.longitude;
+    });
+  }
 
   @override
+  void initState() {
+    super.initState();
+    getCurrentLocation();
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Find Donor"),
         backgroundColor: Colors.red,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.map),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const MapScreen(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
-
       body: Padding(
         padding: const EdgeInsets.all(15),
 
@@ -113,6 +143,27 @@ class _FindDonorScreenState extends State<FindDonorScreen> {
                     return userCity.contains(city.toLowerCase());
 
                   }).toList();
+                  if (userLatitude != null && userLongitude != null) {
+                    docs.sort((a, b) {
+
+                      double distanceA = Geolocator.distanceBetween(
+                        userLatitude!,
+                        userLongitude!,
+                        a["latitude"],
+                        a["longitude"],
+                      );
+
+                      double distanceB = Geolocator.distanceBetween(
+                        userLatitude!,
+                        userLongitude!,
+                        b["latitude"],
+                        b["longitude"],
+                      );
+
+                      return distanceA.compareTo(distanceB);
+                    });
+                  }
+
 
                   if(docs.isEmpty){
 
@@ -134,6 +185,22 @@ class _FindDonorScreenState extends State<FindDonorScreen> {
                     itemBuilder: (context,index){
 
                       var data=docs[index];
+                      double distanceInKm = 0;
+
+                      if (userLatitude != null &&
+                          userLongitude != null &&
+                          data["latitude"] != null &&
+                          data["longitude"] != null) {
+
+                        distanceInKm =
+                            Geolocator.distanceBetween(
+                              userLatitude!,
+                              userLongitude!,
+                              data["latitude"],
+                              data["longitude"],
+                            ) /
+                                1000;
+                      }
 
                       return Card(
 
@@ -183,7 +250,9 @@ class _FindDonorScreenState extends State<FindDonorScreen> {
                           ),
 
                           subtitle: Text(
-                            "${data["city"]}\n${data["phone"]}",
+                            "${data["city"]}\n"
+                                "${data["phone"]}\n"
+                                "${distanceInKm.toStringAsFixed(1)} km away",
                           ),
 
                           onTap: () {

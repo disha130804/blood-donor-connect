@@ -7,6 +7,7 @@ import 'emergency_screen.dart';
 import 'view_requests_screen.dart';
 import 'hospital_registration_screen.dart';
 import 'hospital_list_screen.dart';
+import 'blood_camp_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -170,6 +171,20 @@ class HomeScreen extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (_) =>
                     const HospitalListScreen(),
+                  ),
+                );
+              },
+            ),
+            buildCard(
+              context,
+              Icons.campaign,
+              "Blood Camps",
+              Colors.purple,
+                  () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const BloodCampScreen(),
                   ),
                 );
               },

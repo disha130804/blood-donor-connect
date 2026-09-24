@@ -18,6 +18,7 @@ class DonorDetailsScreen extends StatelessWidget {
     await launchUrl(uri);
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,6 +100,33 @@ class DonorDetailsScreen extends StatelessWidget {
                 onPressed: () {
                   makeCall(
                     donorData["phone"],
+                  );
+                },
+              ),
+            ),
+            const SizedBox(height: 15),
+
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                icon: const Icon(Icons.navigation),
+                label: const Text("Navigate to Donor"),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blue,
+                  foregroundColor: Colors.white,
+                ),
+                onPressed: () async {
+
+                  final latitude = donorData["latitude"];
+                  final longitude = donorData["longitude"];
+
+                  final Uri url = Uri.parse(
+                    "https://www.google.com/maps/dir/?api=1&destination=$latitude,$longitude",
+                  );
+
+                  await launchUrl(
+                    url,
+                    mode: LaunchMode.externalApplication,
                   );
                 },
               ),

@@ -12,6 +12,8 @@ class AuthService {
     required String city,
     required String bloodGroup,
     required String password,
+    required double? latitude,
+    required double? longitude,
   }) async {
     try {
       UserCredential userCredential =
@@ -30,6 +32,8 @@ class AuthService {
         "phone": phone,
         "city": city,
         "bloodGroup": bloodGroup,
+        "latitude": latitude,
+        "longitude": longitude,
         "isDonor": false,
         "createdAt": FieldValue.serverTimestamp(),
       });

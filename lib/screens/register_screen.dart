@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/custom_textfield.dart';
 import '../services/auth_service.dart';
+import 'package:geolocator/geolocator.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -30,6 +31,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
     "O-",
   ];
 
+  double? latitude;
+  double? longitude;
+  Future<void> getCurrentLocation() async {
+
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+
+    if (!serviceEnabled) {
+      return;
+    }
+
+    LocationPermission permission =
+    await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+
+    Position position =
+    await Geolocator.getCurrentPosition();
+
+    latitude = position.latitude;
+    longitude = position.longitude;
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -123,6 +147,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
               text: "REGISTER",
               onPressed: () async {
 
+                await getCurrentLocation();
+
                 String? result = await AuthService().registerUser(
                   name: nameController.text.trim(),
                   email: emailController.text.trim(),
@@ -130,6 +156,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   city: cityController.text.trim(),
                   bloodGroup: selectedBloodGroup,
                   password: passwordController.text.trim(),
+                  latitude: latitude,
+                  longitude: longitude,
                 );
 
                 if (result == null) {
